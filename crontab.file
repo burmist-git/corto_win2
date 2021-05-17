@@ -1,0 +1,37 @@
+#
+# Tue Mar  7 14:06:53 CET 2017
+# Autor: Korostyshevskyi Oleksandr, Leonid Burmistrov, Vsevolod Yeroshenko
+#
+# crontab file for CORTO DATA measurements (U, I and T) and USB-WC data taking
+#
+# Useful crontab commands :
+# To see the setup file for crontab
+# > crontab -l
+#
+# To define setup file for crontab
+# > crontab crontab.file
+#
+# To stop crontab
+# crontab -r
+#
+# Test crontab: Execution of the date.bash in /home/gred/corto_win/ana each minute.
+#* * * * * cd /home/gred/corto_win/ana ; ./date.bash
+# File synchronization each 10 minutes (0 min 10 min .... )
+#0,10,20,30,40,50 * * * * cd /home/gred/corto_win/ana ; ./makeFilesync.screen.bash
+#* * * * * cd /home/gred/corto_win/ana ; ./makeFilesync.screen.bash
+# File convertion each 10 minutes (5 min 15 min .... )
+#5,15,25,35,45,55 * * * * cd /home/gred/corto_win/ana ; ./convertUSBWCMeas2root48ChannelsBin.screen.bash
+*/5 * * * * cd /home/gred/corto_win2/CORTO_UIT/ ; /home/gred/corto_win2/CORTO_UIT/convert;  ./run.bash;
+00 21 * * * cd /home/gred/corto_win2/CORTO_UIT/ ; ./plotFast.bash;
+00 9 * * * cd /home/gred/corto_win2/CORTO_UIT/ ; ./plotFast.bash;
+00 10 1,15 * * rm /home/gred/corto_win2/CORTO_UIT/outLogUIT.root;
+#USB-WC Data synchronization
+*/5 * * * * cd /home/gred/corto_win2/ana/; /home/gred/corto_win2/ana/makeFilesync.screen.bash
+#USB-WC Data convertation and reconstruction 
+#2,7,12,17,22,27,32,37,42,47,52,57 * * * * cd /home/gred/corto_win2/ana/; /home/gred/corto_win2/ana/makeFileconv.screen.bash
+*/4 * * * * cd /home/gred/corto_win2/ana/; /home/gred/corto_win2/ana/makeFileconv.screen.bash
+00 22 * * * cd /home/gred/corto_win2/ana/; /home/gred/corto_win2/ana/runmrpcDQH.screen.bash
+00 10 * * * cd /home/gred/corto_win2/ana/; /home/gred/corto_win2/ana/runmrpcDQH.screen.bash
+#*/5 * * * * cd /home/gred/corto_win2/anaSingleMRPC/ana/ ; /home/gred/corto_win2/anaSingleMRPC/ana/makeFilesync.screen.bash
+#* * * * * cd /home/gred/corto_win2/ana/ ; /home/gred/corto_win2/ana/dataanastatusTest.bash
+#* * * * * cd /home/gred/corto_win2/ana/ ; bash -x /home/gred/corto_win2/ana/makeFileconv.bash | tee -a convbash.log
